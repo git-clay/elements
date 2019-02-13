@@ -1,16 +1,41 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule, } from '@angular/platform-browser';
+import { NgModule, Injector } from '@angular/core';
+import { createCustomElement } from '@angular/elements';
+import { MatDatepickerModule, MatCardModule, MatFormFieldModule, MatInputModule, MatNativeDateModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppComponent } from './app.component';
+import { TestComponent } from './test/test.component';
+import { TestDialogComponent } from './test-dialog/test-dialog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    TestComponent,
+    TestDialogComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  entryComponents: [
+    TestComponent,
+    TestDialogComponent
+  ],
+  providers: [
+    MatDatepickerModule,
+  ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private injector: Injector) { }
+
+  ngDoBootstrap() {
+    const el = createCustomElement(TestComponent, { injector: this.injector });
+    customElements.define('app-test', el);
+    const dialog = createCustomElement(TestDialogComponent, { injector: this.injector });
+    customElements.define('app-test-dialog', dialog);
+  }
+}
